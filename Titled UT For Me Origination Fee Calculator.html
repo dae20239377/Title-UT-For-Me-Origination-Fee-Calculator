@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UT For Me Origination Fee Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #BF5700; /* Burnt Orange */
+            color: white;
+            padding: 20px 0;
+            font-size: 24px;
+        }
+        section {
+            padding: 20px;
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #BF5700; /* Burnt Orange */
+        }
+        .form-group {
+            margin-bottom: 1em;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5em;
+        }
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 0.5em;
+            margin-bottom: 1em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 0.5em 1em;
+            background-color: #BF5700; /* Burnt Orange */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #E68A00; /* Darker Burnt Orange */
+        }
+        .output {
+            margin-top: 20px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    UT For Me Origination Fee Calculator
+</header>
+
+<section id="origination-calculator">
+    <h2>Origination Fee Calculator</h2>
+    <div class="form-group">
+        <label for="loan-type">Loan Type</label>
+        <select id="loan-type">
+            <option value="Sub/Unsub Loan">Sub/Unsub Loan</option>
+            <option value="PPLUS Loan">PPLUS Loan</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="loan-amount">Loan Amount</label>
+        <input type="number" id="loan-amount" placeholder="Enter loan amount" min="0" step="0.01">
+    </div>
+    <button onclick="calculateOriginationFee()">Calculate</button>
+    <div id="output" class="output"></div>
+</section>
+
+<script>
+    function calculateOriginationFee() {
+        const loanType = document.getElementById('loan-type').value;
+        const loanAmount = parseFloat(document.getElementById('loan-amount').value);
+        
+        if (isNaN(loanAmount) || loanAmount <= 0) {
+            document.getElementById('output').innerHTML = "<p>Please enter a valid loan amount.</p>";
+            return;
+        }
+        
+        let feePercentage;
+        
+        if (loanType === 'PPLUS Loan') {
+            feePercentage = 4.228;
+        } else if (loanType === 'Sub/Unsub Loan') {
+            feePercentage = 1.057;
+        } else {
+            feePercentage = 0;
+        }
+        
+        const originationFee = Math.ceil(feePercentage / 100 * loanAmount);
+        const loanAmountAfterFee = loanAmount - originationFee;
+        const loanAmountOffsetFee = loanAmount + originationFee;
+        
+        const output = `
+            <p>The origination fee percentage is: ${feePercentage.toFixed(3)}%</p>
+            <p>The origination fee is: $${originationFee.toFixed(2)}</p>
+            <p>Loan amount after origination fee applied: $${loanAmountAfterFee.toFixed(2)}</p>
+            <p>Loan amount needed to offset origination fee: $${loanAmountOffsetFee.toFixed(2)}</p>
+        `;
+        
+        document.getElementById('output').innerHTML = output;
+    }
+</script>
+
+</body>
+</html>
